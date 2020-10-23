@@ -3,6 +3,7 @@ import {TouchableOpacity, FlatList, Image, View} from 'react-native';
 import {Text, Card, CardItem, Body} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
+import {serverAddress} from '../../sharedVariable';
 function Touchable(props) {
   const navigation = useNavigation();
   return (
@@ -46,7 +47,7 @@ class ContentHome extends Component {
                   }}>
                   <CardItem cardBody>
                     <Image
-                      source={{uri: `http://192.168.43.220:8000${item.image}`}}
+                      source={{uri: `${serverAddress}${item.image}`}}
                       style={{
                         height: 150,
                         width: null,

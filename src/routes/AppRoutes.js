@@ -8,8 +8,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import BottomTab from './BottomTab';
 import ProductDetail from '../screens/Details';
 import Cart from '../screens/Cart';
+import AddProduct from '../screens/AddProduct';
+import EditProduct from '../screens/EditProduct';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
+import EditProfile from '../screens/EditProfile';
+import SplashScren from '../screens/SplashScreen';
 const Stack = createStackNavigator();
 import {useSelector} from 'react-redux';
 
@@ -18,7 +22,8 @@ export default function AppRoutes() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={statusLogin === 200 ? 'BottomTab' : 'Login'}
+        // initialRouteName="Login"
+        // initialRouteName={statusLogin === 200 ? 'BottomTab' : 'Login'}
         screenOptions={{
           headerStyle: {
             backgroundColor: '#CBE15A',
@@ -28,6 +33,13 @@ export default function AppRoutes() {
             fontWeight: 'bold',
           },
         }}>
+        <Stack.Screen
+          name="Splashscreen"
+          component={SplashScren}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="Login"
           component={Login}
@@ -62,6 +74,27 @@ export default function AppRoutes() {
           component={Cart}
           options={{
             title: 'Keranjang',
+          }}
+        />
+        <Stack.Screen
+          name="AddProduct"
+          component={AddProduct}
+          options={{
+            title: 'Tambah Produk',
+          }}
+        />
+        <Stack.Screen
+          name="EditProduct"
+          component={EditProduct}
+          options={{
+            title: 'Edit Produk',
+          }}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            title: 'Perbarui Informasi Akun',
           }}
         />
       </Stack.Navigator>

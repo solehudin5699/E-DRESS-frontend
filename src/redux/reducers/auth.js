@@ -1,6 +1,12 @@
-import {loginAPICreator, registrationAPICreator} from '../actions/auth';
+import {
+  loginAPICreator,
+  registrationAPICreator,
+  updateUserAPICreator,
+} from '../actions/auth';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const initialState = {
+  //LOGIN
   statusLogin: false,
   dataLogin: {},
   errorLogin: undefined,
@@ -8,16 +14,26 @@ const initialState = {
   isLoginFulFilled: false,
   isLoginRejected: false,
 
+  //REGIST
   statusRegist: false,
   dataRegist: [],
   errorRegist: undefined,
   isRegistPending: false,
   isRegistFulFilled: false,
   isRegistRejected: false,
+
+  //UPDATEUSER
+  statusUpdate: false,
+  dataUpdate: [],
+  errorUpdate: undefined,
+  isUpdatePending: false,
+  isUpdateFulFilled: false,
+  isUpdateRejected: false,
 };
 
 const authAPIReducer = (prevState = initialState, action) => {
   switch (action.type) {
+    //LOGIN
     case String(loginAPICreator.pending):
       return {
         ...prevState,
@@ -29,8 +45,16 @@ const authAPIReducer = (prevState = initialState, action) => {
       if (Number(action.payload.status) === 200) {
         datalogin = action.payload.data;
         status = 200;
+        // (async function () {
+        //   try {
+        //     await AsyncStorage.setItem('token', `${action.payload.data.token}`);
+        //   } catch (err) {
+        //     console.log(err);
+        //   }
+        // })();
       } else {
         status = 500;
+        datalogin = undefined;
       }
 
       return {
@@ -52,6 +76,7 @@ const authAPIReducer = (prevState = initialState, action) => {
         isLoginFulFilled: false,
       };
 
+    //REGIST
     case String(registrationAPICreator.pending):
       return {
         ...prevState,
@@ -77,7 +102,53 @@ const authAPIReducer = (prevState = initialState, action) => {
         isRegistFulFilled: false,
       };
 
-    case 'LOGOUT':
+    //UPDATE USER
+    case String(updateUserAPICreator.pending):
+      return {
+        ...prevState,
+        isUpdatePending: true,
+      };
+    case String(updateUserAPICreator.fulfilled): {
+      let statusSuccess;
+      let newData;
+      if (Number(action.payload.status) === 200) {
+        statusSuccess = 200;
+        // newData={...prevState.dataLogin, ...action.payload.data}
+      } else if (Number(action.payload.status) === 500) {
+        statusSuccess = 500;
+        // statusReject=true
+      }
+      return {
+        ...prevState,
+        dataLogin: {...prevState.dataLogin, ...action.payload.data},
+        statusUpdate: statusSuccess,
+        dataUpdate: action.payload.data,
+        errorUpdate: undefined,
+        isUpdatePending: false,
+        isUpdateFulFilled: true,
+        isUpdateRejected: false,
+      };
+    }
+    case String(updateUserAPICreator.rejected):
+      return {
+        ...prevState,
+        statusUpdate: 500,
+        errorUpdate: action.payload,
+        isUpdateRejected: true,
+        isUpdatePending: false,
+        isUpdateFulFilled: false,
+      };
+
+    case 'LOGOUT': {
+      const clearAppData = async function () {
+        try {
+          const keys = await AsyncStorage.getAllKeys();
+          await AsyncStorage.multiRemove(keys);
+        } catch (error) {
+          console.error('Error clearing app data.');
+        }
+      };
+      clearAppData();
       return {
         ...prevState,
         dataLogin: [],
@@ -92,6 +163,17 @@ const authAPIReducer = (prevState = initialState, action) => {
         isRegistPending: false,
         isRegistFulFilled: false,
         isRegistRejected: false,
+      };
+    }
+    case 'RESETSTATUSLOGIN':
+      return {
+        ...prevState,
+        statusLogin: null,
+      };
+    case 'RESETSTATUSUPDATE':
+      return {
+        ...prevState,
+        statusUpdate: null,
       };
     default:
       return prevState;

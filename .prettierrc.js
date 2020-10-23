@@ -6,9 +6,3 @@ module.exports = {
   // parser: "flow",
   endOfLine: "auto",
 };
-
-// "prettier/prettier": ["error", {
-//   ..
-//  "endOfLine":"auto"
-//   ..
-// }],

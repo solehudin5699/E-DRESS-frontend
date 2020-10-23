@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -34,15 +35,18 @@ const SignupSchema = Yup.object().shape({
 function Register() {
   const navigation = useNavigation();
   const [error, setError] = useState(false);
-  const {statusLogin, statusRegist} = useSelector((state) => state.authAPI);
+  const [dataLogin, setDataLogin] = useState({});
+  const {
+    statusLogin,
+    statusRegist,
+    isLoginPending,
+    isRegistPending,
+  } = useSelector((state) => state.authAPI);
   const dispatch = useDispatch();
-  const goToLogin = (body) => {
-    return body;
-  };
   useEffect(() => {
     setError(false);
     if (Number(statusRegist) === 200) {
-      dispatch(loginAPICreator(goToLogin()));
+      dispatch(loginAPICreator(dataLogin));
       if (Number(statusLogin) === 200) {
         navigation.navigate('BottomTab');
       } else if (Number(statusLogin) === 500) {
@@ -62,6 +66,14 @@ function Register() {
             Create a new account to get you products
           </Text>
         </View>
+        {isLoginPending || isRegistPending ? (
+          <ActivityIndicator
+            animating
+            size="large"
+            color="#198711"
+            // style={{marginTop: 15, marginBottom: 15}}
+          />
+        ) : null}
         <Formik
           initialValues={{
             email: '',
@@ -78,12 +90,12 @@ function Register() {
               password: values.password,
               level_id: 2,
             };
-            dispatch(registrationAPICreator(body));
-
-            goToLogin({
+            setDataLogin({
               username: values.username,
               password: values.password,
             });
+            dispatch(registrationAPICreator(body));
+
             console.log({...values});
           }}
           validationSchema={SignupSchema}>

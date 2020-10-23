@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Modal, StyleSheet, View, ScrollView} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import ContentFilter from '../components/ContentFilter';
+import ContentFilter from './ContentFilter';
 import {modalFilterAction} from '../redux/actions/modal';
 
 const ModalFilter = () => {
@@ -11,13 +11,13 @@ const ModalFilter = () => {
   return (
     // <View style={styles.centeredView}>
     <Modal
-      style={styles.centeredView}
-      onDismiss={() => dispatch(modalFilterAction())}
+      // style={styles.centeredView}
+      onDismiss={() => dispatch(modalFilterAction(false))}
       animationType="slide"
       transparent={true}
       visible={modalFilter}
       onRequestClose={() => {
-        dispatch(modalFilterAction());
+        dispatch(modalFilterAction(false));
       }}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>

@@ -1,36 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCartAction} from '../redux/actions/cart';
-import {
-  Alert,
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import {
-  Container,
-  Left,
-  Body,
-  Right,
-  Button,
-  Content,
-  Title,
-  CardItem,
-  Card,
-  Col,
-  Row,
-  Grid,
-  Footer,
-  FooterTab,
-} from 'native-base';
+import {StyleSheet, Image, Text, View} from 'react-native';
+import {Container, Button, Content, CardItem, Card} from 'native-base';
 import {Icon} from 'react-native-elements';
+import {serverAddress} from '../../sharedVariable';
 
 const ProductDetail = (props) => {
   const [product, setProduct] = useState({});
   const {cart} = useSelector((state) => state.cart);
+  const {dataLogin} = useSelector((state) => state.authAPI);
   const dispatch = useDispatch();
   useEffect(() => {
     const {route} = props;
@@ -49,84 +28,78 @@ const ProductDetail = (props) => {
     console.log(product);
     dispatch(addToCartAction(product));
   };
+  function formatRupiah(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',00';
+  }
   return (
     <Container style={{marginTop: -27}}>
       <Content>
         <Card>
-          <CardItem></CardItem>
+          <CardItem />
           <CardItem cardBody>
             <Image
-              source={{uri: `http://192.168.43.220:8000${product.image}`}}
+              source={{uri: `${serverAddress}${product.image}`}}
               style={{height: 300, width: null, flex: 1}}
             />
           </CardItem>
           <CardItem>
             <View style={{flex: 1, flexDirection: 'column'}}>
-              <View style={{flex: 1, flexDirection: 'row', marginBottom: 8}}>
-                {cart.find((item) => item.product_id === product.product_id) ? (
-                  <View>
-                    <Text style={{color: '#d8414a', fontSize: 15}}>
-                      Sudah ada di keranjang Anda
-                    </Text>
-                  </View>
-                ) : null}
-                <View
-                  style={{
-                    flex: 3,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    marginTop: -8,
-                  }}>
+              {dataLogin.level_id === 1 ? null : (
+                <View style={{flex: 1, flexDirection: 'row', marginBottom: 8}}>
                   {cart.find(
                     (item) => item.product_id === product.product_id,
                   ) ? (
-                    <Button
-                      style={{
-                        height: 30,
-                        width: 150,
-                        backgroundColor: '#CBE15A',
-                        justifyContent: 'center',
-                      }}
-                      rounded
-                      onPress={() => {
-                        props.navigation.navigate('Cart');
-                      }}>
-                      <Text style={{fontSize: 15, color: '#517fa4'}}>
-                        Lihat Keranjang
+                    <View>
+                      <Text style={{color: '#d8414a', fontSize: 15}}>
+                        Sudah ada di keranjang Anda
                       </Text>
-                    </Button>
-                  ) : (
-                    <Button
-                      transparent
-                      onPress={() => {
-                        // clearAppData();
-                        addCart();
-                        props.navigation.navigate('Cart');
-                      }}>
-                      <Icon
-                        name="add-shopping-cart"
-                        type="material"
-                        size={30}
-                        color="#517fa4"
-                      />
-                    </Button>
-                  )}
-                  {/* <Button
-                    transparent
-                    onPress={() => {
-                      // clearAppData();
-                      addCart();
-                      props.navigation.navigate('Cart');
+                    </View>
+                  ) : null}
+                  <View
+                    style={{
+                      flex: 3,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      marginTop: -8,
                     }}>
-                    <Icon
-                      name="add-shopping-cart"
-                      type="material"
-                      size={30}
-                      color="#517fa4"
-                    />
-                  </Button> */}
+                    {cart.find(
+                      (item) => item.product_id === product.product_id,
+                    ) ? (
+                      <Button
+                        style={{
+                          height: 30,
+                          width: 150,
+                          backgroundColor: '#CBE15A',
+                          justifyContent: 'center',
+                        }}
+                        rounded
+                        onPress={() => {
+                          props.navigation.navigate('Cart');
+                        }}>
+                        <Text style={{fontSize: 15, color: '#517fa4'}}>
+                          Lihat Keranjang
+                        </Text>
+                      </Button>
+                    ) : (
+                      <Button
+                        transparent
+                        onPress={() => {
+                          // clearAppData();
+                          addCart();
+                          props.navigation.navigate('Cart');
+                        }}>
+                        <Icon
+                          name="add-shopping-cart"
+                          type="material"
+                          size={30}
+                          color="#517fa4"
+                        />
+                      </Button>
+                    )}
+                  </View>
                 </View>
-              </View>
+              )}
+
               <View style={{justifyContent: 'flex-start', marginBottom: 5}}>
                 <Text style={styles.textProduct}>{product.name}</Text>
               </View>
@@ -136,7 +109,9 @@ const ProductDetail = (props) => {
                 </Text>
               </View>
               <View style={{justifyContent: 'flex-start', marginBottom: 8}}>
-                <Text style={styles.textPrice}>{`Rp.${product.price}`}</Text>
+                <Text style={styles.textPrice}>
+                  Rp {formatRupiah(Number(product.price))}
+                </Text>
               </View>
               <View>
                 <Text style={{fontSize: 14, textAlign: 'justify'}}>

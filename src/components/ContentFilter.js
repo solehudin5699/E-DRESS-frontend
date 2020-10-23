@@ -22,7 +22,7 @@ export default ContentFilter = () => {
           <View style={styles.contentButtonFilter}>
             <TouchableOpacity
               onPress={() => {
-                dispatch(modalFilterAction());
+                dispatch(modalFilterAction(false));
               }}
               style={styles.buttonFilter}>
               <Text style={styles.textButtonFilter}>FILTER</Text>
@@ -84,17 +84,17 @@ export default ContentFilter = () => {
           <View style={styles.contentButton}>
             <Button
               rounded
-              onPress={() => dispatch(setNewestAction('ASC'))}
+              onPress={() => dispatch(setNewestAction('DESC'))}
               style={
-                newest === 'ASC' ? styles.buttonActive : styles.buttonInactive
+                newest === 'DESC' ? styles.buttonActive : styles.buttonInactive
               }>
               <Text style={styles.textButton}>Terbaru</Text>
             </Button>
             <Button
               rounded
-              onPress={() => dispatch(setNewestAction('DESC'))}
+              onPress={() => dispatch(setNewestAction('ASC'))}
               style={
-                newest === 'DESC' ? styles.buttonActive : styles.buttonInactive
+                newest === 'ASC' ? styles.buttonActive : styles.buttonInactive
               }>
               <Text style={styles.textButton}>Terlama</Text>
             </Button>

@@ -1,5 +1,10 @@
 const initialState = {
   modalFilter: false,
+  modalSignOut: false,
+  modalEditDelete: false,
+  dataModalEditDelete: null,
+  modalDelete: false,
+  idDelete: null,
   searchBy: 'name',
   sortBy: 'name',
   orderBy: 'ASC',
@@ -11,7 +16,7 @@ const modalReducer = (prevState = initialState, action) => {
     case 'SHOWHIDEFILTER':
       return {
         ...prevState,
-        modalFilter: !prevState.modalFilter,
+        modalFilter: action.payload,
       };
     case 'SETSEARCHBY':
       return {
@@ -32,6 +37,23 @@ const modalReducer = (prevState = initialState, action) => {
       return {
         ...prevState,
         newest: action.payload,
+      };
+    case 'SIGNOUT':
+      return {
+        ...prevState,
+        modalSignOut: action.payload,
+      };
+    case 'EDITDELETE':
+      return {
+        ...prevState,
+        modalEditDelete: action.payload,
+        dataModalEditDelete: action.data,
+      };
+    case 'DELETE':
+      return {
+        ...prevState,
+        modalDelete: action.payload,
+        idDelete: action.id,
       };
     default:
       return prevState;

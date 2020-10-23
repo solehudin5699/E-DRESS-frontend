@@ -1,28 +1,28 @@
-import {
-  getProducts,
-  selectProducts,
-  changeQuantity,
-  cancelOrder,
-} from './actionTypes';
+import {getProducts} from './actionTypes';
 import {createAsyncAction} from 'redux-promise-middleware-actions';
 // import axios from "axios";
-import {getProductsAPI, addProductsAPI} from '../../utils/products';
-// import { postOrderAPI } from "../../utils/requestOrder";
+import {
+  getProductsAPI,
+  addProductsAPI,
+  updateProductsAPI,
+  deleteProductsAPI,
+} from '../../utils/products';
 
 export const getProductsAPICreator = createAsyncAction(
   getProducts,
-  async (keyword, sort, order, newest) => {
-    const res = await getProductsAPI(keyword, sort, order, newest);
+  async (keyword, sort, order, newest, page) => {
+    const res = await getProductsAPI(keyword, sort, order, newest, page);
     return res.data;
   },
 );
-// export const postOrderAPICreator = createAsyncAction(
-//   "postOrder",
-//   async (body) => {
-//     const res = await postOrderAPI(body);
-//     return res.data;
-//   }
-// );
+
+export const updateProductsAPICreator = createAsyncAction(
+  'UPDATEPRODUCT',
+  async (id, body) => {
+    const res = await updateProductsAPI(id, body);
+    return res.data;
+  },
+);
 
 export const addProductsAPICreator = createAsyncAction(
   'ADDPRODUCTS',
@@ -31,27 +31,34 @@ export const addProductsAPICreator = createAsyncAction(
     return res.data;
   },
 );
+export const deleteProductsAPICreator = createAsyncAction(
+  'DELETEPRODUCTS',
+  async (id) => {
+    const res = await deleteProductsAPI(id);
+    return res.data;
+  },
+);
+export const setResetCreator = () => {
+  return {
+    type: 'RESET',
+  };
+};
+export const setKeywordCreator = (keyword) => {
+  return {
+    type: 'KEYWORD',
+    payload: keyword,
+  };
+};
 
-export const selectProductCreator = (event) => {
+export const resetToastCreator = () => {
   return {
-    type: selectProducts,
-    payload: event,
-  };
-};
-export const changeQuantityCreator = (event) => {
-  return {
-    type: changeQuantity,
-    payload: event,
-  };
-};
-export const cancelOrderCreator = () => {
-  return {
-    type: cancelOrder,
+    type: 'RESETTOAST',
   };
 };
 
-export const toastPostOrderCreator = () => {
+export const setPageCreator = (page) => {
   return {
-    type: 'TOAST_POST_ORDER',
+    type: 'SETPAGE',
+    payload: page,
   };
 };

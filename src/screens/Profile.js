@@ -23,7 +23,10 @@ import {Icon} from 'react-native-elements';
 import {useSelector, useDispatch} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {logoutCreator} from '../redux/actions/auth';
+import {modalSignOutAction} from '../redux/actions/modal';
+import {serverAddress} from '../../sharedVariable';
+// import ModalConfirm from '../components/ModalConfirm';
+
 const Profile = () => {
   const navigation = useNavigation();
   const clearAppData = async function () {
@@ -35,7 +38,7 @@ const Profile = () => {
     }
   };
   const dispatch = useDispatch();
-  const {statusLogin} = useSelector((state) => state.authAPI);
+  const {statusLogin, dataLogin} = useSelector((state) => state.authAPI);
   useEffect(() => {
     if (Number(statusLogin) !== 200) {
       navigation.navigate('Login');
@@ -43,157 +46,170 @@ const Profile = () => {
   }, [statusLogin]);
   console.log(statusLogin);
   return (
-    <Container>
-      <Header
-        androidStatusBarColor="#CBE15A"
-        style={{
-          backgroundColor: '#CBE15A',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <Body>
-          <Title>My Profile</Title>
-        </Body>
-      </Header>
-      <Content>
-        <CardItem
+    <>
+      <Container>
+        <Header
+          androidStatusBarColor="#CBE15A"
           style={{
             backgroundColor: '#CBE15A',
-            height: 100,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}>
-          <Left style={{flex: 5}}>
-            <Thumbnail
-              style={{width: 50, height: 50, borderRadius: 50}}
-              source={require('../assets/images/profile.jpg')}
-            />
-            <Body>
-              <Text>Solehudin</Text>
-              <Text note>solehudin@surel.com</Text>
-            </Body>
-          </Left>
-          <Right
+          <Body>
+            <Title>My Profile</Title>
+          </Body>
+        </Header>
+        <Content>
+          <CardItem
             style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
+              backgroundColor: '#CBE15A',
+              height: 100,
             }}>
-            <Icon
-              // reverse
-              name="settings"
-              type="material"
-              color="#517fa4"
-              size={24}
-            />
-          </Right>
-        </CardItem>
-
-        <List>
-          <ListItem>
-            <Left>
-              <Text>Saldo</Text>
-            </Left>
-            <Right>
-              <Icon
-                name="keyboard-arrow-right"
-                type="material"
-                color="#517fa4"
+            <Left style={{flex: 5}}>
+              <Thumbnail
+                style={{width: 50, height: 50, borderRadius: 50}}
+                source={
+                  dataLogin.image
+                    ? {
+                        uri: `${serverAddress}${dataLogin.image}`,
+                      }
+                    : require('../assets/images/iconuser.png')
+                }
               />
-            </Right>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Isi Saldo</Text>
+              <Body>
+                <Text style={{color: '#517fa4'}}>{dataLogin.name}</Text>
+                <Text note style={{color: '#517fa4'}}>
+                  {dataLogin.email}
+                </Text>
+              </Body>
             </Left>
-            <Right>
-              <Icon
-                name="keyboard-arrow-right"
-                type="material"
-                color="#517fa4"
-              />
-            </Right>
-          </ListItem>
-          <Separator bordered>
-            <Text>INFORMASI APLIKASI</Text>
-          </Separator>
-          <ListItem>
-            <Left>
-              <Text>Versi App</Text>
-            </Left>
-            <Right>
-              <Icon
-                name="keyboard-arrow-right"
-                type="material"
-                color="#517fa4"
-              />
-            </Right>
-          </ListItem>
-          <ListItem>
-            <TouchableOpacity
-              // transparent
-              onPress={() => {
-                dispatch(logoutCreator());
+            <Right
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
+              <Icon
+                onPress={() => navigation.navigate('EditProfile')}
+                name="settings"
+                type="material"
+                color="#517fa4"
+                size={24}
+              />
+            </Right>
+          </CardItem>
+
+          <List>
+            <ListItem>
               <Left>
-                <Text>Keluar</Text>
+                <Text style={{color: '#517fa4'}}>Saldo</Text>
               </Left>
-            </TouchableOpacity>
-          </ListItem>
-          <Separator bordered>
-            <Text>INFORMASI UMUM</Text>
-          </Separator>
-          <ListItem>
-            <Left>
-              <Text>Tutorial</Text>
-            </Left>
-            <Right>
-              <Icon
-                name="keyboard-arrow-right"
-                type="material"
-                color="#517fa4"
-              />
-            </Right>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Pusat Bantuan</Text>
-            </Left>
-            <Right>
-              <Icon
-                name="keyboard-arrow-right"
-                type="material"
-                color="#517fa4"
-              />
-            </Right>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Syarat & Ketentuan</Text>
-            </Left>
-            <Right>
-              <Icon
-                name="keyboard-arrow-right"
-                type="material"
-                color="#517fa4"
-              />
-            </Right>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Kebijakan Privasi</Text>
-            </Left>
-            <Right>
-              <Icon
-                onPress={() => clearAppData()}
-                name="keyboard-arrow-right"
-                type="material"
-                color="#517fa4"
-              />
-            </Right>
-          </ListItem>
-        </List>
-      </Content>
-    </Container>
+              <Right>
+                <Icon
+                  name="keyboard-arrow-right"
+                  type="material"
+                  color="#517fa4"
+                />
+              </Right>
+            </ListItem>
+            <ListItem>
+              <Left>
+                <Text style={{color: '#517fa4'}}>Isi Saldo</Text>
+              </Left>
+              <Right>
+                <Icon
+                  name="keyboard-arrow-right"
+                  type="material"
+                  color="#517fa4"
+                />
+              </Right>
+            </ListItem>
+            <Separator bordered>
+              <Text style={{color: '#517fa4'}}>INFORMASI APLIKASI</Text>
+            </Separator>
+            <ListItem>
+              <Left>
+                <Text style={{color: '#517fa4'}}>Versi App</Text>
+              </Left>
+              <Right>
+                <Icon
+                  name="keyboard-arrow-right"
+                  type="material"
+                  color="#517fa4"
+                />
+              </Right>
+            </ListItem>
+            <ListItem onPress={() => dispatch(modalSignOutAction(true))}>
+              <TouchableOpacity
+                // style={{backgroundColor: 'red', width: '100%', height: '100%'}}
+                // transparent
+                onPress={() => {
+                  dispatch(modalSignOutAction(true));
+                  // dispatch(logoutCreator());
+                }}>
+                <Left>
+                  <Text style={{color: '#517fa4'}}>Keluar</Text>
+                </Left>
+              </TouchableOpacity>
+            </ListItem>
+            <Separator bordered>
+              <Text style={{color: '#517fa4'}}>INFORMASI UMUM</Text>
+            </Separator>
+            <ListItem>
+              <Left>
+                <Text style={{color: '#517fa4'}}>Tutorial</Text>
+              </Left>
+              <Right>
+                <Icon
+                  name="keyboard-arrow-right"
+                  type="material"
+                  color="#517fa4"
+                />
+              </Right>
+            </ListItem>
+            <ListItem>
+              <Left>
+                <Text style={{color: '#517fa4'}}>Pusat Bantuan</Text>
+              </Left>
+              <Right>
+                <Icon
+                  name="keyboard-arrow-right"
+                  type="material"
+                  color="#517fa4"
+                />
+              </Right>
+            </ListItem>
+            <ListItem>
+              <Left>
+                <Text style={{color: '#517fa4'}}>Syarat & Ketentuan</Text>
+              </Left>
+              <Right>
+                <Icon
+                  name="keyboard-arrow-right"
+                  type="material"
+                  color="#517fa4"
+                />
+              </Right>
+            </ListItem>
+            <ListItem>
+              <Left>
+                <Text style={{color: '#517fa4'}}>Kebijakan Privasi</Text>
+              </Left>
+              <Right>
+                <Icon
+                  onPress={() => clearAppData()}
+                  name="keyboard-arrow-right"
+                  type="material"
+                  color="#517fa4"
+                />
+              </Right>
+            </ListItem>
+          </List>
+        </Content>
+        {/* <ModalConfirm /> */}
+      </Container>
+    </>
   );
 };
 

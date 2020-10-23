@@ -1,6 +1,7 @@
-export const modalFilterAction = () => {
+export const modalFilterAction = (value) => {
   return {
     type: 'SHOWHIDEFILTER',
+    payload: value,
   };
 };
 export const setSearchByAction = (search) => {
@@ -25,5 +26,26 @@ export const setNewestAction = (newest) => {
   return {
     type: 'NEWEST',
     payload: newest,
+  };
+};
+
+export const modalSignOutAction = (value) => {
+  return {
+    type: 'SIGNOUT',
+    payload: value,
+  };
+};
+export const modalEditDeleteAction = (value, data) => {
+  return {
+    type: 'EDITDELETE',
+    payload: value,
+    data: data,
+  };
+};
+export const modalDeleteAction = (value, id) => {
+  return {
+    type: 'DELETE',
+    payload: value,
+    id: id,
   };
 };

@@ -5,13 +5,66 @@ import {SearchBar, Icon} from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {modalFilterAction} from '../redux/actions/modal';
-import {getProductsAPICreator} from '../redux/actions/products';
+import {
+  getProductsAPICreator,
+  setKeywordCreator,
+  setResetCreator,
+  setPageCreator,
+} from '../redux/actions/products';
 
-function Cart(props) {
+function CartIcon(props) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity onPress={() => navigation.navigate(props.screenName)}>
-      {props.children}
+      {/* {props.children} */}
+      <View style={{flexDirection: 'row', width: '15%'}}>
+        <Icon
+          name="shopping-cart"
+          type="material"
+          color="#517fa4"
+          size={24}
+          style={{width: '100%', marginRight: 15}}
+        />
+        <View
+          style={{
+            position: 'absolute',
+            height: 20,
+            width: 20,
+            borderRadius: 15,
+            backgroundColor: '#d8414a',
+            left: 20,
+            top: -10,
+            zIndex: 10,
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: 'white',
+              fontSize: 12,
+            }}>
+            {props.numInCart}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
+function AddIcon(props) {
+  const navigation = useNavigation();
+  return (
+    <TouchableOpacity onPress={() => navigation.navigate(props.screenName)}>
+      {/* {props.children} */}
+      <View style={{flexDirection: 'row', width: '100%'}}>
+        <Icon
+          name="add-circle"
+          type="material"
+          color="#517fa4"
+          size={24}
+          style={{marginRight: 15}}
+        />
+      </View>
     </TouchableOpacity>
   );
 }
@@ -19,13 +72,16 @@ function Cart(props) {
 const HeaderHome = ({navigation}) => {
   const {sortBy, orderBy, newest} = useSelector((state) => state.modals);
   const {cart} = useSelector((state) => state.cart);
+  const {dataLogin} = useSelector((state) => state.authAPI);
   const [keyword, setSearch] = useState('');
   const updateSearch = (key) => {
     setSearch(key);
   };
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getProductsAPICreator('', sortBy, orderBy, newest));
+    dispatch(setResetCreator());
+    dispatch(getProductsAPICreator('', sortBy, orderBy, newest, 1));
+    dispatch(setPageCreator(1));
   }, [dispatch, sortBy, orderBy, newest]);
   return (
     <Header
@@ -58,15 +114,20 @@ const HeaderHome = ({navigation}) => {
           height: 40,
         }}
         inputStyle={{margin: 0, color: 'green', borderWidth: 0}}
-        placeholder="Search here..."
+        placeholder="Cari di sini..."
         placeholderTextColor="green"
         onChangeText={updateSearch}
-        onEndEditing={() =>
-          dispatch(getProductsAPICreator(keyword, sortBy, orderBy, newest))
-        }
-        onClear={() =>
-          dispatch(getProductsAPICreator('', sortBy, orderBy, newest))
-        }
+        onEndEditing={() => {
+          dispatch(setKeywordCreator(keyword));
+          dispatch(setResetCreator());
+          dispatch(getProductsAPICreator(keyword, sortBy, orderBy, newest, 1));
+          dispatch(setPageCreator(1));
+        }}
+        onClear={() => {
+          dispatch(setResetCreator());
+          dispatch(setKeywordCreator(''));
+          dispatch(getProductsAPICreator('', sortBy, orderBy, newest, 1));
+        }}
         value={keyword}
         round={true}
       />
@@ -77,41 +138,14 @@ const HeaderHome = ({navigation}) => {
           type="material"
           color="#517fa4"
           size={24}
-          onPress={() => dispatch(modalFilterAction())}
+          onPress={() => dispatch(modalFilterAction(true))}
         />
       </View>
-      <Cart screenName="Cart">
-        <View style={{flexDirection: 'row', width: '15%'}}>
-          <Icon
-            name="shopping-cart"
-            type="material"
-            color="#517fa4"
-            size={24}
-            style={{width: '100%', marginRight: 15}}
-          />
-          <View
-            style={{
-              position: 'absolute',
-              height: 20,
-              width: 20,
-              borderRadius: 15,
-              backgroundColor: '#d8414a',
-              left: 20,
-              top: -10,
-              zIndex: 10,
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: 'white',
-                fontSize: 12,
-              }}>
-              {cart.length}
-            </Text>
-          </View>
-        </View>
-      </Cart>
+      {dataLogin.level_id === 1 ? (
+        <AddIcon screenName="AddProduct" />
+      ) : (
+        <CartIcon screenName="Cart" numInCart={cart.length} />
+      )}
     </Header>
   );
   // }

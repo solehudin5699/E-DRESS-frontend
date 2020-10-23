@@ -4,7 +4,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ScrollView,
+  ActivityIndicator,
+  BackHandler,
 } from 'react-native';
 import {Container, Header} from 'native-base';
 import {useSelector, useDispatch} from 'react-redux';
@@ -13,7 +14,7 @@ import Button from '../components/Button';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
-import {loginAPICreator} from '../redux/actions/auth';
+import {loginAPICreator, resetStatusLoginCreator} from '../redux/actions/auth';
 
 const SigninSchema = Yup.object().shape({
   username: Yup.string()
@@ -26,15 +27,26 @@ const SigninSchema = Yup.object().shape({
 function Login() {
   const navigation = useNavigation();
   const [error, setError] = useState(false);
-  const {statusLogin} = useSelector((state) => state.authAPI);
+  const {statusLogin, isLoginPending} = useSelector((state) => state.authAPI);
   const dispatch = useDispatch();
+  const backAction = () => {
+    BackHandler.exitApp();
+    return true;
+  };
   useEffect(() => {
-    setError(false);
+    BackHandler.addEventListener('hardwareBackPress', backAction);
     if (Number(statusLogin) === 200) {
-      navigation.navigate('BottomTab');
+      navigation.navigate('BottomTab', {screen: 'Home'});
     } else if (Number(statusLogin) === 500) {
+      navigation.navigate('Login');
       setError(true);
+
+      setTimeout(() => {
+        dispatch(resetStatusLoginCreator());
+      }, 5000);
     }
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
   }, [dispatch, statusLogin]);
   // setTimeout(setError(false), 1000);
   return (
@@ -120,6 +132,14 @@ function Login() {
             );
           }}
         </Formik>
+        {isLoginPending ? (
+          <ActivityIndicator
+            animating
+            size="large"
+            color="#198711"
+            // style={{marginTop: 15, marginBottom: 15}}
+          />
+        ) : null}
       </View>
     </Container>
   );
