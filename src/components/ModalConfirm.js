@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {Text, View, Dimensions} from 'react-native';
 import {Button} from 'native-base';
@@ -88,6 +89,14 @@ const ModalConfirm = () => {
             onPress={() => {
               dispatch(modalSignOutAction(false));
               dispatch(logoutCreator());
+              // navigation.reset({
+              //   index: 0,
+              //   routes: [
+              //     {
+              //       name: 'Login',
+              //     },
+              //   ],
+              // });
             }}
             style={{
               width: '30%',

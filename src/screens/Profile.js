@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {
@@ -41,7 +42,14 @@ const Profile = () => {
   const {statusLogin, dataLogin} = useSelector((state) => state.authAPI);
   useEffect(() => {
     if (Number(statusLogin) !== 200) {
-      navigation.navigate('Login');
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Login',
+          },
+        ],
+      });
     }
   }, [statusLogin]);
   console.log(statusLogin);
