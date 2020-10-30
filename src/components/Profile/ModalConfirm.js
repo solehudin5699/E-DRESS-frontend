@@ -1,13 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
-import {Text, View, Dimensions} from 'react-native';
-import {Button} from 'native-base';
-import Modal from 'react-native-modal';
-import {useDispatch, useSelector} from 'react-redux';
-import {modalSignOutAction} from '../redux/actions/modal';
-import {logoutCreator} from '../redux/actions/auth';
+import React, {useState, useEffect} from "react";
+import {Text, View, Dimensions} from "react-native";
+import {Button} from "native-base";
+import Modal from "react-native-modal";
+import {useDispatch, useSelector} from "react-redux";
+import {modalSignOutAction} from "../../redux/actions/modal";
+import {logoutCreator} from "../../redux/actions/auth";
 
-const window = Dimensions.get('window');
+const window = Dimensions.get("window");
 const width = window.width * window.scale;
 const height = window.height * window.scale;
 const ModalConfirm = () => {
@@ -26,8 +26,8 @@ const ModalConfirm = () => {
       isVisible={modalSignOut}
       style={{
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         margin: 0,
       }}
       backdropOpacity={0.3}
@@ -46,27 +46,27 @@ const ModalConfirm = () => {
       backdropTransitionInTiming={0}>
       <View
         style={{
-          backgroundColor: '#ffffff',
-          width: '90%',
+          backgroundColor: "#ffffff",
+          width: "90%",
           padding: 10,
-          justifyContent: 'center',
-          borderColor: '#CBE15A',
+          justifyContent: "center",
+          borderColor: "#CBE15A",
           borderRadius: 3,
         }}>
         <View style={{marginTop: 5, padding: 10}}>
           <Text
             style={{
               fontSize: 18,
-              color: '#517fa4',
+              color: "#517fa4",
             }}>
             Apakah Anda yakin ingin keluar ?
           </Text>
         </View>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            width: '100%',
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            width: "100%",
             marginTop: 30,
           }}>
           <Button
@@ -75,15 +75,15 @@ const ModalConfirm = () => {
               dispatch(modalSignOutAction(false));
             }}
             style={{
-              width: '30%',
+              width: "30%",
               marginRight: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
               height: 30,
-              backgroundColor: '#517fa4',
+              backgroundColor: "#517fa4",
               borderRadius: 10,
             }}>
-            <Text style={{fontSize: 15, color: '#ffffff'}}>TIDAK</Text>
+            <Text style={{fontSize: 15, color: "#ffffff"}}>TIDAK</Text>
           </Button>
           <Button
             onPress={() => {
@@ -99,14 +99,14 @@ const ModalConfirm = () => {
               // });
             }}
             style={{
-              width: '30%',
-              justifyContent: 'center',
-              alignItems: 'center',
+              width: "30%",
+              justifyContent: "center",
+              alignItems: "center",
               height: 30,
-              backgroundColor: '#d8414a',
+              backgroundColor: "#d8414a",
               borderRadius: 10,
             }}>
-            <Text style={{fontSize: 15, color: '#ffffff'}}>YA</Text>
+            <Text style={{fontSize: 15, color: "#ffffff"}}>YA</Text>
           </Button>
         </View>
       </View>

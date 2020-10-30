@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {addToCartAction} from '../redux/actions/cart';
-import {StyleSheet, Image, Text, View} from 'react-native';
-import {Container, Button, Content, CardItem, Card} from 'native-base';
-import {Icon} from 'react-native-elements';
-import {serverAddress} from '../../sharedVariable';
+/* eslint-disable quotes */
+/* eslint-disable no-shadow */
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState, useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addToCartAction} from "../redux/actions/cart";
+import {StyleSheet, Image, Text, View} from "react-native";
+import {Container, Button, Content, CardItem, Card} from "native-base";
+import {Icon} from "react-native-elements";
+import {serverAddress} from "../../sharedVariable";
 
 const ProductDetail = (props) => {
   const [product, setProduct] = useState({});
@@ -29,7 +32,7 @@ const ProductDetail = (props) => {
     dispatch(addToCartAction(product));
   };
   function formatRupiah(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',00';
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ",00";
   }
   return (
     <Container style={{marginTop: -27}}>
@@ -43,14 +46,14 @@ const ProductDetail = (props) => {
             />
           </CardItem>
           <CardItem>
-            <View style={{flex: 1, flexDirection: 'column'}}>
+            <View style={{flex: 1, flexDirection: "column"}}>
               {dataLogin.level_id === 1 ? null : (
-                <View style={{flex: 1, flexDirection: 'row', marginBottom: 8}}>
+                <View style={{flex: 1, flexDirection: "row", marginBottom: 8}}>
                   {cart.find(
                     (item) => item.product_id === product.product_id,
                   ) ? (
                     <View>
-                      <Text style={{color: '#d8414a', fontSize: 15}}>
+                      <Text style={{color: "#d8414a", fontSize: 15}}>
                         Sudah ada di keranjang Anda
                       </Text>
                     </View>
@@ -58,8 +61,8 @@ const ProductDetail = (props) => {
                   <View
                     style={{
                       flex: 3,
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
                       marginTop: -8,
                     }}>
                     {cart.find(
@@ -69,14 +72,14 @@ const ProductDetail = (props) => {
                         style={{
                           height: 30,
                           width: 150,
-                          backgroundColor: '#CBE15A',
-                          justifyContent: 'center',
+                          backgroundColor: "#CBE15A",
+                          justifyContent: "center",
                         }}
                         rounded
                         onPress={() => {
-                          props.navigation.navigate('Cart');
+                          props.navigation.navigate("Cart");
                         }}>
-                        <Text style={{fontSize: 15, color: '#517fa4'}}>
+                        <Text style={{fontSize: 15, color: "#517fa4"}}>
                           Lihat Keranjang
                         </Text>
                       </Button>
@@ -86,7 +89,7 @@ const ProductDetail = (props) => {
                         onPress={() => {
                           // clearAppData();
                           addCart();
-                          props.navigation.navigate('Cart');
+                          props.navigation.navigate("Cart");
                         }}>
                         <Icon
                           name="add-shopping-cart"
@@ -100,21 +103,21 @@ const ProductDetail = (props) => {
                 </View>
               )}
 
-              <View style={{justifyContent: 'flex-start', marginBottom: 5}}>
+              <View style={{justifyContent: "flex-start", marginBottom: 5}}>
                 <Text style={styles.textProduct}>{product.name}</Text>
               </View>
-              <View style={{justifyContent: 'flex-start', marginBottom: 8}}>
-                <Text style={{...styles.textProduct, color: '#517fa4'}}>
+              <View style={{justifyContent: "flex-start", marginBottom: 8}}>
+                <Text style={{...styles.textProduct, color: "#517fa4"}}>
                   Kategori: {product.category_name}
                 </Text>
               </View>
-              <View style={{justifyContent: 'flex-start', marginBottom: 8}}>
+              <View style={{justifyContent: "flex-start", marginBottom: 8}}>
                 <Text style={styles.textPrice}>
                   Rp {formatRupiah(Number(product.price))}
                 </Text>
               </View>
               <View>
-                <Text style={{fontSize: 14, textAlign: 'justify'}}>
+                <Text style={{fontSize: 14, textAlign: "justify"}}>
                   {product.description}
                 </Text>
               </View>
@@ -131,17 +134,17 @@ export default ProductDetail;
 
 const styles = StyleSheet.create({
   textProduct: {
-    color: 'black',
+    color: "black",
     fontSize: 18,
   },
   textPrice: {
-    color: '#d8414a',
+    color: "#d8414a",
     fontSize: 18,
   },
   starColor: {
-    color: '#d8414a',
+    color: "#d8414a",
   },
   footer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
 });

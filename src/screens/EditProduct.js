@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   TouchableOpacity,
   Image,
   View,
   ActivityIndicator,
   ToastAndroid,
-} from 'react-native';
-import ImagePicker from 'react-native-image-picker';
-import {useSelector, useDispatch} from 'react-redux';
-import {serverAddress} from '../../sharedVariable';
+} from "react-native";
+import ImagePicker from "react-native-image-picker";
+import {useSelector, useDispatch} from "react-redux";
+import {serverAddress} from "../../sharedVariable";
 import {
   Container,
   Content,
@@ -20,23 +20,23 @@ import {
   Input,
   Picker,
   Textarea,
-} from 'native-base';
-import {Icon} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
+} from "native-base";
+import {Icon} from "react-native-elements";
+import {useNavigation} from "@react-navigation/native";
 import {
   updateProductsAPICreator,
   resetToastCreator,
   getProductsAPICreator,
   setResetCreator,
   setPageCreator,
-} from '../redux/actions/products';
+} from "../redux/actions/products";
 
 const LoadingIndicator = () => {
   return <ActivityIndicator animating size="large" color="#198711" />;
 };
 const ToastSuccess = () => {
   ToastAndroid.show(
-    'Berhasil memperbarui produk.',
+    "Berhasil memperbarui produk.",
     ToastAndroid.TOP,
     ToastAndroid.SHORT,
   );
@@ -63,20 +63,20 @@ const EditProduct = (props) => {
 
   const handleSelect = () => {
     const options = {
-      title: 'Select picture...',
+      title: "Select picture...",
       storageOptions: {
         skipBackup: true,
-        path: 'images',
+        path: "images",
       },
       noData: true,
     };
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
-        console.log('Cancel');
+        console.log("Cancel");
       } else if (response.error) {
-        console.log('ImagePicker Error:', response.error);
+        console.log("ImagePicker Error:", response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button', response.customButton);
+        console.log("User tapped custom button", response.customButton);
       } else {
         const source = response;
         setImage(source);
@@ -93,28 +93,28 @@ const EditProduct = (props) => {
       stock === null ||
       categoryId === null
     ) {
-      ToastError('Isi data yang diminta');
+      ToastError("Isi data yang diminta");
     } else if (image) {
-      data.append('name', name);
-      data.append('description', description);
-      data.append('price', price);
-      data.append('stock', stock);
-      data.append('image', {
+      data.append("name", name);
+      data.append("description", description);
+      data.append("price", price);
+      data.append("stock", stock);
+      data.append("image", {
         uri: `file://${image.path}`,
         type: image.type,
         name: image.fileName,
         size: image.fileSize,
       });
 
-      data.append('category_id', categoryId);
+      data.append("category_id", categoryId);
       dispatch(updateProductsAPICreator(Number(product.product_id), data));
     } else {
-      data.append('name', name);
-      data.append('description', description);
-      data.append('price', price);
-      data.append('stock', stock);
-      data.append('image', product.image);
-      data.append('category_id', categoryId);
+      data.append("name", name);
+      data.append("description", description);
+      data.append("price", price);
+      data.append("stock", stock);
+      data.append("image", product.image);
+      data.append("category_id", categoryId);
       dispatch(updateProductsAPICreator(Number(product.product_id), data));
     }
   };
@@ -140,7 +140,7 @@ const EditProduct = (props) => {
     if (isUpdateFulFilled) {
       ToastSuccess();
       dispatch(setResetCreator());
-      dispatch(getProductsAPICreator('', sortBy, orderBy, newest, 1));
+      dispatch(getProductsAPICreator("", sortBy, orderBy, newest, 1));
       dispatch(setPageCreator(1));
       setName(null);
       setPrice(null);
@@ -149,11 +149,11 @@ const EditProduct = (props) => {
       setImage(null);
       setStock(null);
       setTimeout(() => {
-        navigation.navigate('Home');
+        navigation.navigate("Home");
         dispatch(resetToastCreator());
       }, 3000);
     } else if (isUpdateRejected) {
-      ToastError('Gagal memperbarui produk, silahkan coba lagi');
+      ToastError("Gagal memperbarui produk, silahkan coba lagi");
       setTimeout(() => {
         dispatch(resetToastCreator());
       }, 3000);
@@ -165,13 +165,13 @@ const EditProduct = (props) => {
         <Content>
           <View
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
             }}>
             <TouchableOpacity
               style={{
-                width: '100%',
-                borderColor: image ? null : '#CBE15A',
+                width: "100%",
+                borderColor: image ? null : "#CBE15A",
                 borderWidth: image ? null : 1,
               }}
               onPress={() => handleSelect()}>
@@ -189,11 +189,11 @@ const EditProduct = (props) => {
               <Button
                 onPress={() => handleSelect()}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   right: 0,
                   bottom: -15,
                   borderRadius: 10,
-                  backgroundColor: '#517fa4',
+                  backgroundColor: "#517fa4",
                   height: 30,
                   marginRight: 3,
                   zIndex: 10,
@@ -208,17 +208,24 @@ const EditProduct = (props) => {
               zIndex: -1,
               padding: 10,
             }}>
-            <Item floatingLabel>
-              <Label>Nama Produk</Label>
-              <Input onChangeText={(text) => setName(text)} value={name} />
+            <Item fixedLabel>
+              <Label style={{fontSize: 15}}>Nama Produk</Label>
+              <Input
+                style={{fontSize: 15}}
+                onChangeText={(text) => setName(text)}
+                value={name}
+              />
             </Item>
             <Item style={{paddingRight: 10, paddingVertical: 3}}>
-              <Label style={{width: '30%'}}>Deskripsi Produk</Label>
+              <Label style={{width: "30%", fontSize: 15}}>
+                Deskripsi Produk
+              </Label>
               <Textarea
                 style={{
-                  width: '70%',
+                  width: "70%",
                   marginTop: 0,
-                  backgroundColor: 'transparent',
+                  backgroundColor: "transparent",
+                  fontSize: 15,
                 }}
                 rowSpan={5}
                 bordered
@@ -227,33 +234,36 @@ const EditProduct = (props) => {
                 value={description}
               />
             </Item>
-            <Item floatingLabel>
-              <Label>Harga (Rp)</Label>
+            <Item fixedLabel>
+              <Label style={{fontSize: 15}}>Harga (Rp)</Label>
               <Input
                 keyboardType="numeric"
                 onChangeText={(num) => setPrice(num)}
                 value={price}
+                style={{fontSize: 15}}
               />
             </Item>
-            <Item floatingLabel>
-              <Label>Jumlah</Label>
+            <Item fixedLabel>
+              <Label style={{fontSize: 15}}>Jumlah</Label>
               <Input
                 keyboardType="numeric"
                 onChangeText={(num) => setStock(num)}
                 value={stock}
+                style={{fontSize: 15}}
               />
             </Item>
-            <Item fixedLabel style={{flexDirection: 'row'}}>
-              <Label style={{width: '70%'}}>Kategori</Label>
+            <Item fixedLabel style={{flexDirection: "row"}}>
+              <Label style={{width: "70%", fontSize: 15}}>Kategori</Label>
               <Picker
                 style={{
-                  width: '30%',
-                  justifyContent: 'center',
-                  alignSelf: 'center',
+                  width: "30%",
+                  justifyContent: "center",
+                  alignSelf: "center",
                 }}
                 mode="dropdown"
                 iosIcon={<Icon name="arrow-down" />}
                 placeholderIconColor="#007aff"
+                itemTextStyle={{fontSize: 25}}
                 selectedValue={categoryId}
                 onValueChange={(value) => setCategoryId(value)}>
                 <Picker.Item label="Kemeja" value={1} />
@@ -267,20 +277,20 @@ const EditProduct = (props) => {
           {isUpdatePending ? <LoadingIndicator /> : null}
           <View
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-              padding: 10,
-              marginTop: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+              padding: 5,
+              marginTop: 30,
             }}>
             <Button
               onPress={() => handleSubmit()}
               style={{
-                width: 200,
+                width: "95%",
                 borderRadius: 10,
-                backgroundColor: '#CBE15A',
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: "#CBE15A",
+                justifyContent: "center",
+                alignItems: "center",
               }}>
               <Text>Perbarui</Text>
             </Button>

@@ -2,8 +2,8 @@ import {
   loginAPICreator,
   registrationAPICreator,
   updateUserAPICreator,
-} from '../actions/auth';
-import AsyncStorage from '@react-native-community/async-storage';
+} from "../actions/auth";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const initialState = {
   //LOGIN
@@ -82,16 +82,29 @@ const authAPIReducer = (prevState = initialState, action) => {
         ...prevState,
         isRegistPending: true,
       };
-    case String(registrationAPICreator.fulfilled):
+    case String(registrationAPICreator.fulfilled): {
+      let status;
+      let data;
+      let error;
+      if (action.payload.status === 200) {
+        status = 200;
+        data = action.payload.data;
+        error = undefined;
+      } else if (action.payload.status === 500) {
+        status = 500;
+        data = undefined;
+        error = action.payload.error;
+      }
       return {
         ...prevState,
-        statusRegist: action.payload.status,
-        dataRegist: action.payload.data,
-        errorRegist: undefined,
+        statusRegist: status,
+        dataRegist: data,
+        errorRegist: error,
         isRegistPending: false,
         isRegistFulFilled: true,
         isRegistRejected: false,
       };
+    }
     case String(registrationAPICreator.rejected):
       return {
         ...prevState,
@@ -139,13 +152,13 @@ const authAPIReducer = (prevState = initialState, action) => {
         isUpdateFulFilled: false,
       };
 
-    case 'LOGOUT': {
+    case "LOGOUT": {
       const clearAppData = async function () {
         try {
           const keys = await AsyncStorage.getAllKeys();
           await AsyncStorage.multiRemove(keys);
         } catch (error) {
-          console.error('Error clearing app data.');
+          console.error("Error clearing app data.");
         }
       };
       clearAppData();
@@ -165,12 +178,17 @@ const authAPIReducer = (prevState = initialState, action) => {
         isRegistRejected: false,
       };
     }
-    case 'RESETSTATUSLOGIN':
+    case "RESETSTATUSLOGIN":
       return {
         ...prevState,
         statusLogin: null,
       };
-    case 'RESETSTATUSUPDATE':
+    case "RESETSTATUSREGIST":
+      return {
+        ...prevState,
+        statusRegist: null,
+      };
+    case "RESETSTATUSUPDATE":
       return {
         ...prevState,
         statusUpdate: null,

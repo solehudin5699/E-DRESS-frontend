@@ -1,6 +1,6 @@
-import React from 'react';
-import {View, TextInput, StyleSheet, Text} from 'react-native';
-import PropTypes from 'prop-types';
+import React from "react";
+import {View, TextInput, StyleSheet, Text} from "react-native";
+import PropTypes from "prop-types";
 
 const Input = ({
   label,
@@ -12,7 +12,7 @@ const Input = ({
 }) => {
   return (
     <View style={containerStyle}>
-      <Text>{label}</Text>
+      <Text style={{color: "#517fa4"}}>{label}</Text>
       <TextInput style={styles.input} {...props} />
       <Text style={styles.errorInput}>{touched && error}</Text>
     </View>
@@ -22,15 +22,16 @@ const Input = ({
 // This creates an object of styles using React Native StyleSheet
 const styles = StyleSheet.create({
   containerStyle: {
-    marginVertical: 5,
+    marginVertical: 1,
   },
   input: {
+    borderBottomColor: "#517fa4",
     borderBottomWidth: 1,
-    minHeight: 40,
-    padding: 10,
-    color: '#517fa4',
+    height: 40,
+    fontSize: 16,
+    color: "#517fa4",
   },
-  errorInput: {color: 'red', fontSize: 12},
+  errorInput: {color: "red", fontSize: 12},
 });
 
 // this made me thing about TypeScript

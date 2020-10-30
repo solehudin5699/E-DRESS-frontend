@@ -1,22 +1,26 @@
-import React, {useState} from 'react';
+/* eslint-disable curly */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable quotes */
+/* eslint-disable no-unused-vars */
+import React, {useState} from "react";
 import {
   TouchableOpacity,
   FlatList,
   Image,
   View,
   ActivityIndicator,
-} from 'react-native';
-import {Text, Card, CardItem, Body} from 'native-base';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import {Icon} from 'react-native-elements';
-import {useDispatch, useSelector} from 'react-redux';
-import {serverAddress} from '../../sharedVariable';
+} from "react-native";
+import {Text, Card, CardItem, Body} from "native-base";
+import {useNavigation, useFocusEffect} from "@react-navigation/native";
+import {Icon} from "react-native-elements";
+import {useDispatch, useSelector} from "react-redux";
+import {serverAddress} from "../../../sharedVariable";
 import {
   getProductsAPICreator,
   setResetCreator,
   setPageCreator,
-} from '../redux/actions/products';
-import {modalEditDeleteAction} from '../redux/actions/modal';
+} from "../../redux/actions/products";
+import {modalEditDeleteAction} from "../../redux/actions/modal";
 
 function Touchable(props) {
   const navigation = useNavigation();
@@ -41,14 +45,14 @@ const ProductEmpty = () => {
   return (
     <View
       style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
         padding: 25,
       }}>
       <Icon name="search" type="material" color="#d8414a" size={50} />
       <Text
-        style={{textAlign: 'center', fontSize: 15, color: '#517fa4'}}
+        style={{textAlign: "center", fontSize: 15, color: "#517fa4"}}
         numberOfLines={2}>
         Maaf... produk dengan kata kunci "{keyword}" tidak ditemukan :(
       </Text>
@@ -61,9 +65,9 @@ const SomethingWrong = () => {
   return (
     <View
       style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
         padding: 25,
       }}>
       <Icon
@@ -75,18 +79,18 @@ const SomethingWrong = () => {
 
       <View
         style={{
-          justifyContent: 'flex-start',
+          justifyContent: "flex-start",
           padding: 10,
-          borderColor: '#d8414a',
+          borderColor: "#d8414a",
           borderWidth: 1,
         }}>
-        <Text style={{fontSize: 15, color: '#517fa4', textAlign: 'justify'}}>
+        <Text style={{fontSize: 15, color: "#517fa4", textAlign: "justify"}}>
           Tidak dapat tersambung ke database kami. Kemungkinan terjadi karena:
         </Text>
-        <Text style={{fontSize: 15, color: '#517fa4', textAlign: 'justify'}}>
+        <Text style={{fontSize: 15, color: "#517fa4", textAlign: "justify"}}>
           1. Sistem kami sedang dalam perbaikan, atau
         </Text>
-        <Text style={{fontSize: 15, color: '#517fa4', textAlign: 'justify'}}>
+        <Text style={{fontSize: 15, color: "#517fa4", textAlign: "justify"}}>
           2. Ada masalah pada koneksi internet Anda
         </Text>
       </View>
@@ -97,11 +101,11 @@ const SomethingWrong = () => {
 const EndResult = () => {
   const {keyword} = useSelector((state) => state.products);
   return (
-    <View style={{alignItems: 'center', paddingVertical: 10}}>
+    <View style={{alignItems: "center", paddingVertical: 10}}>
       {keyword.length === 0 ? (
-        <Text style={{color: '#517fa4'}}>Sudah sampai akhir...</Text>
+        <Text style={{color: "#517fa4"}}>Sudah sampai akhir...</Text>
       ) : (
-        <Text style={{color: '#517fa4'}}>Pencarian selesai...</Text>
+        <Text style={{color: "#517fa4"}}>Pencarian selesai...</Text>
       )}
     </View>
   );
@@ -119,26 +123,28 @@ const ContentHome = () => {
   } = useSelector((state) => state.products);
   const {sortBy, orderBy, newest} = useSelector((state) => state.modals);
   const dispatch = useDispatch();
-
   const renderFooter = () => {
-    if (!isPending)
-      return productsBasedPage.length === 0 ? <EndResult /> : null;
-
     return (
       <>
-        <ActivityIndicator
-          animating
-          size="large"
-          color="#198711"
-          style={{marginTop: 15, marginBottom: 0}}
-        />
+        {productsBasedPage.length ? (
+          <View style={{height: 50}}>
+            <ActivityIndicator
+              animating
+              size="large"
+              color="#198711"
+              style={{marginTop: 15, marginBottom: 5}}
+            />
+          </View>
+        ) : products.length ? (
+          <EndResult />
+        ) : null}
       </>
     );
   };
   const dataRefresh = () => {
     dispatch(setResetCreator());
     dispatch(setPageCreator(1));
-    dispatch(getProductsAPICreator('', sortBy, orderBy, newest, 1));
+    dispatch(getProductsAPICreator("", sortBy, orderBy, newest, 1));
   };
 
   const loadMore = () => {
@@ -165,7 +171,7 @@ const ContentHome = () => {
   };
 
   function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
   return (
     <View
@@ -183,7 +189,7 @@ const ContentHome = () => {
               size="large"
               // color
               color="#198711"
-              style={{marginTop: 20, marginBottom: 15}}
+              style={{marginTop: 50, marginBottom: 15}}
             />
           </View>
         ) : isRejected ? (
@@ -223,14 +229,14 @@ const ContentHome = () => {
                         }}
                       />
                     </CardItem>
-                    <CardItem style={{backgroundColor: '#D7F28C'}}>
+                    <CardItem style={{backgroundColor: "#D7F28C"}}>
                       <Body>
                         <Text
                           style={{
                             fontSize: 14.5,
-                            color: '#517fa4',
+                            color: "#517fa4",
                           }}>{`${item.name.substring(0, 30)}...`}</Text>
-                        <Text style={{color: '#d8414a', fontSize: 13}}>
+                        <Text style={{color: "#d8414a", fontSize: 13}}>
                           Rp {numberWithCommas(item.price)}
                         </Text>
                       </Body>
@@ -245,7 +251,8 @@ const ContentHome = () => {
           onRefresh={() => dataRefresh()}
           refreshing={isPending}
           onEndReached={() => loadMore()}
-          onEndReachedThreshold={0.01}
+          onEndReachedThreshold={0.1}
+          progressViewOffset={-115}
           // ItemSeparatorComponent={renderSeparator()}
         />
       )}

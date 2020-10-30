@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from "react";
 import {
   TouchableOpacity,
   Image,
   View,
   StyleSheet,
   ActivityIndicator,
-} from 'react-native';
-import ImagePicker from 'react-native-image-picker';
-import {useSelector, useDispatch} from 'react-redux';
-import {Text, Button, Form, Item, Label, Input} from 'native-base';
-import {Icon} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
-import {updateUserAPICreator} from '../redux/actions/auth';
-import {serverAddress} from '../../sharedVariable';
+} from "react-native";
+import ImagePicker from "react-native-image-picker";
+import {useSelector, useDispatch} from "react-redux";
+import {Text, Button, Form, Item, Label, Input} from "native-base";
+import {Icon} from "react-native-elements";
+import {useNavigation} from "@react-navigation/native";
+import {updateUserAPICreator} from "../../redux/actions/auth";
+import {serverAddress} from "../../../sharedVariable";
 
 const LoadingIndicator = () => {
   return <ActivityIndicator animating size="large" color="#198711" />;
@@ -32,20 +32,20 @@ const ContentEditProfile = (props) => {
 
   const handleSelect = () => {
     const options = {
-      title: 'Select picture...',
+      title: "Select picture...",
       storageOptions: {
         skipBackup: true,
-        path: 'images',
+        path: "images",
       },
       noData: true,
     };
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
-        console.log('Cancel');
+        console.log("Cancel");
       } else if (response.error) {
-        console.log('ImagePicker Error:', response.error);
+        console.log("ImagePicker Error:", response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button', response.customButton);
+        console.log("User tapped custom button", response.customButton);
       } else {
         const source = response;
         setImage(source);
@@ -56,12 +56,12 @@ const ContentEditProfile = (props) => {
   const handleSubmit = () => {
     let data = new FormData();
     if (name === null || username === null || email === null) {
-      ToastError('Isi data yang diminta');
+      ToastError("Isi data yang diminta");
     } else if (image) {
-      data.append('name', name);
-      data.append('username', username);
-      data.append('email', email);
-      data.append('image', {
+      data.append("name", name);
+      data.append("username", username);
+      data.append("email", email);
+      data.append("image", {
         uri: `file://${image.path}`,
         type: image.type,
         name: image.fileName,
@@ -70,10 +70,10 @@ const ContentEditProfile = (props) => {
 
       dispatch(updateUserAPICreator(Number(dataLogin.user_id), data));
     } else {
-      data.append('name', name);
-      data.append('username', username);
-      data.append('email', email);
-      data.append('image', dataLogin.image);
+      data.append("name", name);
+      data.append("username", username);
+      data.append("email", email);
+      data.append("image", dataLogin.image);
       dispatch(updateUserAPICreator(Number(dataLogin.user_id), data));
     }
   };
@@ -94,11 +94,11 @@ const ContentEditProfile = (props) => {
           <TouchableOpacity
             style={{
               // width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
               paddingTop: 10,
               paddingBottom: 10,
-              borderBottomColor: image ? null : '#CBE15A',
+              borderBottomColor: image ? null : "#CBE15A",
               borderBottomWidth: image ? null : 1,
             }}
             onPress={() => handleSelect()}>
@@ -116,10 +116,10 @@ const ContentEditProfile = (props) => {
                 style={{
                   width: 200,
                   height: 200,
-                  resizeMode: 'cover',
+                  resizeMode: "cover",
                   borderRadius: 100,
                 }}
-                source={require('../assets/images/iconuser.png')}
+                source={require("../../assets/images/iconuser.png")}
               />
             ) : (
               <>
@@ -137,14 +137,14 @@ const ContentEditProfile = (props) => {
             )}
             <View
               style={{
-                position: 'absolute',
+                position: "absolute",
                 // bottom: 20,
                 // right: 40,
                 bottom: 3,
                 right: 10,
                 zIndex: 10,
                 paddig: 0,
-                backgroundColor: !image && !dataLogin.image ? 'white' : null,
+                backgroundColor: !image && !dataLogin.image ? "white" : null,
                 borderRadius: !image && !dataLogin.image ? 50 : null,
               }}>
               <Icon
@@ -154,7 +154,7 @@ const ContentEditProfile = (props) => {
                 color="#517fa4"
                 size={20}
                 style={{
-                  width: '100%',
+                  width: "100%",
                 }}
               />
             </View>
@@ -163,18 +163,18 @@ const ContentEditProfile = (props) => {
 
         <Form style={styles.form}>
           <Item regular style={styles.input}>
-            <Label style={{width: '30%', marginLeft: 10}}>Nama</Label>
+            <Label style={{width: "30%", marginLeft: 10}}>Nama</Label>
             <Input onChangeText={(text) => setName(text)} value={name} />
           </Item>
           <Item regular style={styles.input}>
-            <Label style={{width: '30%', marginLeft: 10}}>Username</Label>
+            <Label style={{width: "30%", marginLeft: 10}}>Username</Label>
             <Input
               onChangeText={(text) => setUsername(text)}
               value={username}
             />
           </Item>
           <Item regular style={styles.input}>
-            <Label style={{width: '30%', marginLeft: 10}}>Email</Label>
+            <Label style={{width: "30%", marginLeft: 10}}>Email</Label>
             <Input onChangeText={(text) => setEmail(text)} value={email} />
           </Item>
 
@@ -184,7 +184,7 @@ const ContentEditProfile = (props) => {
             </Button>
           </View>
           {error ? (
-            <Text style={{color: 'red', fontSize: 12}}>
+            <Text style={{color: "red", fontSize: 12}}>
               *Pastikan foto profile tidak lebih dari 1 Mb dan form tidak
               kosong...
             </Text>
@@ -201,20 +201,20 @@ const ContentEditProfile = (props) => {
 export default ContentEditProfile;
 
 const styles = StyleSheet.create({
-  content: {backgroundColor: '#D7F28C'},
+  content: {backgroundColor: "#D7F28C"},
   contentForm: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
     // padding: 20,
   },
   containerImage: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     // width: '90%',
-    width: '100%',
+    width: "100%",
 
-    backgroundColor: 'white',
+    backgroundColor: "white",
     // borderTopLeftRadius: 10,
     // borderTopRightRadius: 10,
     // shadowColor: '#050505',
@@ -224,20 +224,20 @@ const styles = StyleSheet.create({
     // elevation: 3,
   },
   buttonImage: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     bottom: -15,
     borderRadius: 10,
-    backgroundColor: '#517fa4',
+    backgroundColor: "#517fa4",
     height: 30,
     marginRight: 3,
     zIndex: 10,
-    width: '90%',
+    width: "90%",
   },
   form: {
     zIndex: -1,
-    backgroundColor: 'white',
-    width: '100%',
+    backgroundColor: "white",
+    width: "100%",
     padding: 20,
     // borderBottomRightRadius: 10,
     // borderBottomLeftRadius: 10,
@@ -248,25 +248,25 @@ const styles = StyleSheet.create({
     // elevation: 3,
   },
   input: {
-    borderColor: '#D7F28C',
+    borderColor: "#D7F28C",
     borderWidth: 1,
-    width: '100%',
+    width: "100%",
     marginTop: 3,
     borderRadius: 10,
     marginBottom: 3,
   },
   containerButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
     padding: 10,
     marginTop: 20,
   },
   buttonSubmit: {
     width: 200,
     borderRadius: 10,
-    backgroundColor: '#517fa4',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#517fa4",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

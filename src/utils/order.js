@@ -1,9 +1,12 @@
 import axios from "axios";
-import {serverAddress} from '../../sharedVariable';
+import {serverAddress} from "../../sharedVariable";
 
 export const postOrderAPI = (body) => {
-  return axios.post(`${serverAddress}/order/add`, body
-  // ,{headers:{"x-access-token":`bearer ${localStorage.getItem("token")}`}}
-  );
+  return axios.post(`${serverAddress}/order`, body);
 };
-
+export const getAllOrderAPI = () => {
+  return axios.get(`${serverAddress}/order`);
+};
+export const getOrderByCustomerAPI = (id) => {
+  return axios.get(`${serverAddress}/order/${id}`);
+};

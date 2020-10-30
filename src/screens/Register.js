@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import {
   StyleSheet,
   Text,
@@ -6,30 +6,40 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-} from 'react-native';
-import Input from '../components/Input';
-import Button from '../components/Button';
-import {Formik} from 'formik';
-import * as Yup from 'yup';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
-import {registrationAPICreator, loginAPICreator} from '../redux/actions/auth';
+  BackHandler,
+} from "react-native";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import {Formik} from "formik";
+import * as Yup from "yup";
+import {useNavigation} from "@react-navigation/native";
+import {useSelector, useDispatch} from "react-redux";
+import {
+  registrationAPICreator,
+  loginAPICreator,
+  resetStatusLoginCreator,
+  resetStatusRegistCreator,
+} from "../redux/actions/auth";
 
 const SignupSchema = Yup.object().shape({
   username: Yup.string()
-    .min(4, 'Minimun length of 4')
-    .max(12, 'Max length of 12')
-    .required('Required'),
+    .matches(
+      /^([a-z0-9]|_){0,}$/,
+      "Only lowercase (a-z), number (0-9) and underscore (_) are allowed",
+    )
+    .min(4, "Minimum length of 4")
+    .max(12, "Max length of 12")
+    .required("Required"),
   fullname: Yup.string()
     // .min(11, 'Minimun length of 11')
-    .max(20, 'Maximum length of 20')
-    .required('Required'),
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().min(8, 'Minimun length of 8').required('Required'),
+    .max(20, "Maximum length of 20")
+    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string().min(8, "Minimun length of 8").required("Required"),
   confirm_password: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    .min(8, 'Minimun length of 8')
-    .required('Required'),
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .min(8, "Minimum length of 8")
+    .required("Required"),
 });
 
 function Register() {
@@ -41,30 +51,53 @@ function Register() {
     statusRegist,
     isLoginPending,
     isRegistPending,
+    dataRegist,
+    errorRegist,
   } = useSelector((state) => state.authAPI);
   const dispatch = useDispatch();
   useEffect(() => {
-    setError(false);
+    // setError(false);
     if (Number(statusRegist) === 200) {
       dispatch(loginAPICreator(dataLogin));
       if (Number(statusLogin) === 200) {
-        navigation.navigate('BottomTab');
-      } else if (Number(statusLogin) === 500) {
-        setError(true);
+        navigation.navigate("BottomTab");
       }
-    } else if (Number(statusRegist) === 500) {
-      setError(true);
     }
   }, [dispatch, statusRegist, statusLogin]);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => {
+      dispatch(resetStatusRegistCreator());
+      dispatch(resetStatusLoginCreator());
+    });
+    return unsubscribe;
+  }, [navigation, dispatch]);
+  const backAction = () => {
+    navigation.goBack();
+    return true;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", backAction);
 
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", backAction);
+  }, [navigation]);
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.containerheader}>
-          <Text style={styles.header}>Create Account</Text>
-          <Text style={styles.subHeader}>
-            Create a new account to get you products
-          </Text>
+          <Text style={styles.header}>E - D R E S S</Text>
+          <Text style={styles.headerRegist}>Create Account</Text>
+          {statusRegist === 500 ? (
+            <Text style={{...styles.subHeader, color: "red", fontSize: 15}}>
+              {errorRegist !== undefined
+                ? errorRegist.msg
+                : "Registration failed"}
+            </Text>
+          ) : (
+            <Text style={styles.subHeader}>
+              Create a new account to get you products
+            </Text>
+          )}
         </View>
         {isLoginPending || isRegistPending ? (
           <ActivityIndicator
@@ -76,11 +109,11 @@ function Register() {
         ) : null}
         <Formik
           initialValues={{
-            email: '',
-            username: '',
-            fullname: '',
-            password: '',
-            confirm_password: '',
+            email: "",
+            username: "",
+            fullname: "",
+            password: "",
+            confirm_password: "",
           }}
           onSubmit={(values) => {
             let body = {
@@ -114,8 +147,8 @@ function Register() {
                 <View>
                   <Input
                     placeholder="Maximum fullname is 20 characters"
-                    onChangeText={handleChange('fullname')}
-                    onBlur={handleBlur('fullname')}
+                    onChangeText={handleChange("fullname")}
+                    onBlur={handleBlur("fullname")}
                     value={values.fullname}
                     touched={touched.fullname}
                     error={errors.fullname}
@@ -123,8 +156,8 @@ function Register() {
                   />
                   <Input
                     placeholder="Username must be between 4 and 12 characters"
-                    onChangeText={handleChange('username')}
-                    onBlur={handleBlur('username')}
+                    onChangeText={handleChange("username")}
+                    onBlur={handleBlur("username")}
                     value={values.username}
                     touched={touched.username}
                     error={errors.username}
@@ -132,8 +165,8 @@ function Register() {
                   />
                   <Input
                     placeholder="Email"
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
                     value={values.email}
                     touched={touched.email}
                     error={errors.email}
@@ -141,8 +174,8 @@ function Register() {
                   />
                   <Input
                     placeholder="Minimum password is 8 characters"
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
                     value={values.password}
                     touched={touched.password}
                     error={errors.password}
@@ -151,8 +184,8 @@ function Register() {
                   />
                   <Input
                     placeholder="Confirm your password"
-                    onChangeText={handleChange('confirm_password')}
-                    onBlur={handleBlur('confirm_password')}
+                    onChangeText={handleChange("confirm_password")}
+                    onBlur={handleBlur("confirm_password")}
                     value={values.confirm_password}
                     touched={touched.confirm_password}
                     error={errors.confirm_password}
@@ -170,10 +203,12 @@ function Register() {
                     text="Create Account"
                   />
                   <View style={styles.signIn}>
-                    <Text>Already have an account?</Text>
+                    <Text style={{color: "#517fa4", fontSize: 15}}>
+                      Already have an account?
+                    </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate('Login');
+                        navigation.navigate("Login");
                       }}>
                       <Text style={styles.signInText}> Sign In</Text>
                     </TouchableOpacity>
@@ -193,38 +228,53 @@ export default Register;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f3f3f3',
+    backgroundColor: "#f3f3f3",
     padding: 10,
   },
   containerheader: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundColor: '#CBE15A',
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#CBE15A",
     margin: -10,
     marginBottom: 10,
   },
   header: {
-    fontSize: 28,
-    textAlign: 'center',
-    marginVertical: 10,
-    color: '#517fa4',
+    paddingTop: 30,
+    fontSize: 30,
+    textAlign: "center",
+    marginVertical: 5,
+    color: "#517fa4",
+    fontWeight: "700",
+  },
+  headerRegist: {
+    paddingTop: 10,
+    fontSize: 20,
+    textAlign: "center",
+    // marginVertical: 5,
+    color: "#517fa4",
+    fontWeight: "700",
   },
   subHeader: {
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 15,
-    color: 'white',
+    color: "white",
   },
   formAction: {},
   conditionText: {
     marginVertical: 10,
-    textAlign: 'center',
+    textAlign: "center",
+    color: "#517fa4",
+    fontSize: 15,
   },
   signIn: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 20,
+    fontSize: 15,
   },
   signInText: {
-    color: 'rgb(51,130,246)',
+    color: "rgb(51,130,246)",
+    fontSize: 15,
   },
 });

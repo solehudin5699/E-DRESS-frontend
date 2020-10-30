@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-} from 'react-native';
-import PropTypes from 'prop-types';
+} from "react-native";
+import PropTypes from "prop-types";
 
 const Button = ({
   text,
@@ -19,6 +19,7 @@ const Button = ({
 }) => {
   return (
     <TouchableOpacity
+      // style={{width: "100%"}}
       onPress={onPress}
       disabled={disabled || isSubmitting}
       style={containerStyle}>
@@ -34,22 +35,22 @@ const Button = ({
 const styles = StyleSheet.create({
   containerStyle: {
     marginVertical: 10,
-    backgroundColor: '#CBE15A',
+    backgroundColor: "#CBE15A",
     paddingVertical: 10,
     borderRadius: 5,
-    borderColor: '#CBE15A',
+    borderColor: "#CBE15A",
   },
   textStyle: {
-    textAlign: 'center',
-    color: 'white',
+    textAlign: "center",
+    color: "white",
     fontSize: 20,
   },
 });
 
 Button.defaultProps = {
-  text: '',
+  text: "",
   isSubmitting: false,
-  indicatorColor: 'white',
+  indicatorColor: "white",
   ...styles, // this would spread the styles object
 };
 

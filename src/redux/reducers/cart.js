@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const initialState = {
   cart: [],
   totalPriceSelected: 0,
@@ -5,7 +6,7 @@ const initialState = {
 
 const cartReducer = (prevState = initialState, action) => {
   switch (action.type) {
-    case 'ADDTOCART': {
+    case "ADDTOCART": {
       prevState.cart.push({
         ...action.payload,
         number: 1,
@@ -16,7 +17,7 @@ const cartReducer = (prevState = initialState, action) => {
         ...prevState,
       };
     }
-    case 'INCQ': {
+    case "INCQ": {
       prevState.cart[action.payload].number++;
       prevState.cart[action.payload].priceBasedNumber =
         Number(prevState.cart[action.payload].priceBasedNumber) +
@@ -25,7 +26,7 @@ const cartReducer = (prevState = initialState, action) => {
         ...prevState,
       };
     }
-    case 'DECQ': {
+    case "DECQ": {
       if (prevState.cart[action.payload].number >= 2) {
         prevState.cart[action.payload].number--;
         prevState.cart[action.payload].priceBasedNumber =
@@ -38,7 +39,7 @@ const cartReducer = (prevState = initialState, action) => {
         ...prevState,
       };
     }
-    case 'DEL': {
+    case "DEL": {
       let newCart = prevState.cart.filter((item) => {
         return item.isChecked === false;
       });
@@ -47,7 +48,7 @@ const cartReducer = (prevState = initialState, action) => {
         cart: newCart,
       };
     }
-    case 'CHECK': {
+    case "CHECK": {
       prevState.cart[action.payload].isChecked = !prevState.cart[action.payload]
         .isChecked;
       if (
@@ -66,7 +67,7 @@ const cartReducer = (prevState = initialState, action) => {
         ...prevState,
       };
     }
-    case 'TOTALPRICE': {
+    case "TOTALPRICE": {
       let total = prevState.cart
         .filter((item) => {
           return item.isChecked;

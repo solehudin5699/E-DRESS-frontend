@@ -1,4 +1,10 @@
 module.exports = {
-  root: false,
-  extends: '@react-native-community',
+  root: true,
+  extends: "@react-native-community",
+  rules: {
+    "prettier/prettier": 0,
+  },
+  reportUnusedDisableDirectives: false,
+  eslintDisableQuotes: false,
+  eslintDisable: true,
 };

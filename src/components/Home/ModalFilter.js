@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import {Modal, StyleSheet, View, ScrollView} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import ContentFilter from './ContentFilter';
-import {modalFilterAction} from '../redux/actions/modal';
+import {Modal, StyleSheet, View, ScrollView} from "react-native";
+import {useSelector, useDispatch} from "react-redux";
+import ContentFilter from "./ContentFilter";
+import {modalFilterAction} from "../../redux/actions/modal";
 
 const ModalFilter = () => {
   const {modalFilter} = useSelector((state) => state.modals);
@@ -34,15 +34,15 @@ const ModalFilter = () => {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   modalView: {
     // backgroundColor: 'white',
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    shadowColor: '#000',
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -52,28 +52,28 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalContent: {
-    width: '100%',
+    width: "100%",
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   buttonView: {
-    alignItems: 'center',
-    width: '100%',
+    alignItems: "center",
+    width: "100%",
   },
   closeButton: {
     // just: 'center',
-    width: '50%',
-    backgroundColor: '#2196F3',
+    width: "50%",
+    backgroundColor: "#2196F3",
     borderRadius: 20,
     padding: 10,
     elevation: 10,
   },
   modalText: {
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
 

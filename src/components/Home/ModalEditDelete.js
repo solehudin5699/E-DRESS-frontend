@@ -1,12 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import {Text, View, Dimensions, Alert} from 'react-native';
-import {Button, List, ListItem} from 'native-base';
-import Modal from 'react-native-modal';
-import {useDispatch, useSelector} from 'react-redux';
-import {modalEditDeleteAction, modalDeleteAction} from '../redux/actions/modal';
-import {useNavigation} from '@react-navigation/native';
+import React, {useState, useEffect} from "react";
+import {Text, View, Dimensions, Alert} from "react-native";
+import {Button, List, ListItem} from "native-base";
+import Modal from "react-native-modal";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  modalEditDeleteAction,
+  modalDeleteAction,
+} from "../../redux/actions/modal";
+import {useNavigation} from "@react-navigation/native";
 
-const window = Dimensions.get('window');
+const window = Dimensions.get("window");
 const width = window.width * window.scale;
 const height = window.height * window.scale;
 
@@ -25,8 +28,8 @@ const ModalEditDelete = () => {
       isVisible={modalEditDelete}
       style={{
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         margin: 0,
       }}
       backdropOpacity={0.3}
@@ -45,11 +48,11 @@ const ModalEditDelete = () => {
       backdropTransitionInTiming={0}>
       <View
         style={{
-          backgroundColor: '#ffffff',
-          width: '90%',
+          backgroundColor: "#ffffff",
+          width: "90%",
           padding: 10,
-          justifyContent: 'center',
-          borderColor: '#CBE15A',
+          justifyContent: "center",
+          borderColor: "#CBE15A",
           borderRadius: 3,
         }}>
         <View style={{marginTop: 5, padding: 3}}>
@@ -57,7 +60,7 @@ const ModalEditDelete = () => {
             <ListItem
               button
               onPress={() => {
-                navigation.navigate('EditProduct', dataModalEditDelete);
+                navigation.navigate("EditProduct", dataModalEditDelete);
                 dispatch(modalEditDeleteAction(false));
               }}>
               <Text>Edit Produk</Text>
@@ -75,7 +78,7 @@ const ModalEditDelete = () => {
             <ListItem
               button
               onPress={() => {
-                navigation.navigate('AddProduct');
+                navigation.navigate("AddProduct");
                 dispatch(modalEditDeleteAction(false));
               }}>
               <Text>Tambah Produk Lain</Text>
@@ -84,9 +87,9 @@ const ModalEditDelete = () => {
         </View>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            width: '100%',
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            width: "100%",
             marginTop: 30,
           }}>
           <Button
@@ -95,15 +98,15 @@ const ModalEditDelete = () => {
               dispatch(modalEditDeleteAction(false));
             }}
             style={{
-              width: '30%',
+              width: "30%",
               marginRight: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
               height: 30,
-              backgroundColor: '#517fa4',
+              backgroundColor: "#517fa4",
               borderRadius: 10,
             }}>
-            <Text style={{fontSize: 15, color: '#ffffff'}}>BATAL</Text>
+            <Text style={{fontSize: 15, color: "#ffffff"}}>BATAL</Text>
           </Button>
         </View>
       </View>
