@@ -73,6 +73,7 @@ export const serverAddress = "http://localhost:8000";
 ## APK Release
 
 Download this apk release for getting experience with this app.
+
 <a href="http://bit.ly/edress_app">
 <img src="https://img.shields.io/badge/Download%20on%20the-Google%20Drive-blue.svg?style=popout&logo=google-drive"/>
 </a>
