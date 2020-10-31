@@ -191,7 +191,7 @@ const ContentTransaction = () => {
           </Text>
         </View>
       ) : (
-        <Content>
+        <Content style={{padding: 10}}>
           <Accordion
             onPress={() => setOn(true)}
             sections={dataOrderCust}
