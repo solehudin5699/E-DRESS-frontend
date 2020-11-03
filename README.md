@@ -1,7 +1,7 @@
 # E-Dress App <img src="https://img.shields.io/badge/Build%20with-React%20Native-61dbfb?style=popout&logo=react">
 
 <div align="center">
-    <img width="250" src="./src/assets/images/ic_launcher_round.png">
+    <img width="240" src="./src/assets/images/ic_launcher_round.png">
 </div>
 
 ## Contents
