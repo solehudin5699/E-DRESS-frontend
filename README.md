@@ -80,7 +80,7 @@ Download this apk release for getting experience with this app.
 
 ## Related Project
 
-Restfull API for this application, clone this for development E-Dress App.
+RESTful API for this application, clone this for development E-Dress App.
 
 <a href="https://github.com/solehudin5699/E-DRESS-backend.git">
 <img src="https://img.shields.io/badge/E--Dress%20Backend-Repository-blue.svg?style=popout&logo=github"/>
