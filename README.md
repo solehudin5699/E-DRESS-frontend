@@ -1,4 +1,4 @@
-# E-Dress App
+# E-Dress App <img src="https://img.shields.io/badge/Build%20with-React%20Native-61dbfb?style=popout&logo=react">
 
 <div align="center">
     <img width="250" src="./src/assets/images/ic_launcher_round.png">
@@ -45,7 +45,7 @@
 ## Installation for Development
 
 1. Open your terminal or command prompt
-2. Type `git clone https://github.com/solehudin5699/E-DRESS-backend.git`
+2. Type `git clone https://github.com/solehudin5699/E-DRESS-frontend.git`
 3. Open the folder and type `npm install` for install dependencies
 4. Create file titled **_sharedVariable.js_** in root folder with the following contents :
 
